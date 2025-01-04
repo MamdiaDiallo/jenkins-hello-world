@@ -1,5 +1,5 @@
 public class Main {
   public static void main( String[] args) {
-  System.out.println("hello, world ici git via git verifié new commit");
+  System.out.println("hello, world ici git via git verifié new commit all");
 }
 }
