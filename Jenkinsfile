@@ -4,7 +4,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 // Clone le dépôt
-                git clone 'https://github.com/MamdiaDiallo/jenkins-hello-world.git'
+                git branch: 'main', url: 'https://github.com/MamdiaDiallo/jenkins-hello-world.git'
             }
         }
         stage('Build') {
