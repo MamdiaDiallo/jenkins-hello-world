@@ -18,4 +18,24 @@ pipeline {
             }
         }
     }
+    post {
+        Success {
+            echo 'Pipeline completed successfully!'
+            emailext(
+                subject:'Jenkins job success: ${JOB_NAME}',
+                body: 'The job ${JOB_NAME} completed successfully.',
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                )
+        }
+         faillure {
+             echo 'Pepeline failed. chech logs for details.'
+             emailext(
+                 subject: 'Jenkins Job FAILED: ${JOB_NAME}',
+                 body: '''The Jenkins job ${JOB_NAME} failed.
+                 please check the Jenkins console ''',
+                 recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                 )
+         }
+    }         
+    
 }
