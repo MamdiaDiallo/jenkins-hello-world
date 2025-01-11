@@ -1,41 +1,41 @@
 pipeline {
-    agent any // Définit l'agent ou l'environnement d'exécution
+    agent any
     stages {
-        stage('clone') {
+        stage('Clone Repository') {
             steps {
-                sh "rm -rf *"
-                sh "git clone https://github.com/MamdiaDiallo/jenkins-hello-world.git"
+                git branch: 'main', url: 'https://github.com/MamdiaDiallo/jenkins-hello-world.git'
             }
         }
         stage('Build') {
             steps {
-                sh 'cd jenkins-hello-world/ javac Main.java' // Exemple : compilation avec Maven
+                sh 'javac Main.java'
             }
         }
-        stage('run') {
+        stage('Run') {
             steps {
-                sh 'cd jenkins-hello-world/ && java Main.java' // Déploiement
+                sh 'java Main'
             }
         }
     }
     post {
-        Success {
+        success {
             echo 'Pipeline completed successfully!'
+            // Exemple : Envoi d'une notification (email, Slack, etc.)
             emailext(
-                subject:'Jenkins job success: ${JOB_NAME}',
-                body: 'The job ${JOB_NAME} completed successfully.',
+                subject: 'Jenkins Job SUCCESS: ${JOB_NAME}',
+                body: 'The Jenkins job ${JOB_NAME} completed successfully.',
                 recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-                )
+            )
         }
-         faillure {
-             echo 'Pepeline failed. chech logs for details.'
-             emailext(
-                 subject: 'Jenkins Job FAILED: ${JOB_NAME}',
-                 body: '''The Jenkins job ${JOB_NAME} failed.
-                 please check the Jenkins console ''',
-                 recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-                 )
-         }
-    }         
-    
+        failure {
+            echo 'Pipeline failed. Check logs for details.'
+            // Exemple : Remonter les logs d'erreur
+            emailext(
+                subject: 'Jenkins Job FAILED: ${JOB_NAME}',
+                body: '''The Jenkins job ${JOB_NAME} failed.
+                Please check the Jenkins console logs for details.''',
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+            )
+        }
+    }
 }
