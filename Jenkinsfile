@@ -8,12 +8,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'javac Main.java'
+                sh './jenkins-hello/javac Main.java'
             }
         }
         stage('Run') {
             steps {
-                sh 'java Main'
+                sh './jenkins-hello/java Main'
             }
         }
     }
